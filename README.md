@@ -29,7 +29,7 @@ python fae_train.py
 The comparison of the evaluation results can be found in the [jupyter notebook](https://github.com/VectifyAI/FAE/blob/main/finetune/eval.ipynb).
 
 
-[Get early access](https://ii2abc2jejf.typeform.com/to/BKDVoklr)  to Vectify's RAG platform and embedding model fine-tuning service.
+[Get early access](https://ii2abc2jejf.typeform.com/to/BKDVoklr)  to our RAG platform and embedding model fine-tuning service.
 
 
 Vectify AI
