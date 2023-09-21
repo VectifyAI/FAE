@@ -1,0 +1,10 @@
+faiss_cpu==1.7.4
+llama_index==0.8.22
+numpy==1.24.3
+openai==0.28.0
+pandas==2.1.1
+python-dotenv==1.0.0
+sentence_transformers==2.2.2
+torch==2.0.1
+tqdm==4.65.0
+transformers==4.33.1
