@@ -17,7 +17,7 @@ class FAEMultipleNegativesRankingLoss(nn.Module):
         self.model = model
         self.scale = scale
         self.similarity_fct = similarity_fct
-        self.cross_entropy_loss = nn.CrossEntropyLoss()
+        self.cross_entropy_loss = nn.CrossEntropyLoss(label_smoothing=0.2)
 
 
     def forward(self, sentence_features, labels: Tensor):
@@ -28,15 +28,13 @@ class FAEMultipleNegativesRankingLoss(nn.Module):
         
         reps = [self.model(sentence_feature)['sentence_embedding'] for sentence_feature in sentence_features]
         device=reps[0].device
-        # print(len(reps))
-        embeddings_a = torch.cat((openai_embeddings_a.to(device), normalize(reps[0],p=2.0, dim=1)),1)
-        # print(embeddings_a.size())
-        embeddings_b = torch.cat((openai_embeddings_b.to(device), normalize(reps[1],p=2.0, dim=1)),1)
-        # print(embeddings_b.size())
+        embeddings_a = torch.cat((openai_embeddings_a.to(device), normalize(reps[0],p=2.0, dim=1)/2),1)
+        embeddings_b = torch.cat((openai_embeddings_b.to(device), normalize(reps[1],p=2.0, dim=1)/2),1)
 
-        scores = self.similarity_fct(embeddings_a, embeddings_b) * self.scale
+        scores = self.similarity_fct(embeddings_a, embeddings_b)* self.scale
         labels = torch.tensor(range(len(scores)), dtype=torch.long, device=scores.device)  # Example a[i] should match with b[i]
-        return self.cross_entropy_loss(scores, labels)
+        loss=self.cross_entropy_loss(scores, labels)
+        return 0.01*loss
 
     def get_config_dict(self):
         return {'scale': self.scale, 'similarity_fct': self.similarity_fct.__name__}

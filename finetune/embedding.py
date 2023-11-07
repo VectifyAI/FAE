@@ -11,6 +11,8 @@ from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
 import numpy as np
 import pickle
+from torch.nn.functional import normalize
+
 
 
 
@@ -103,9 +105,8 @@ class FAEEncoder(Encoder):
         with torch.no_grad():
             model_embeddings=self.model.encode(sentences)
             ### Since the OpenAI embeddings are normalized, we also need to normalize the augmented embeddings
-            normalized_model_embeddings=model_embeddings/np.linalg.norm(model_embeddings)
-            joint_embeddings=np.concatenate((np.asarray(openai_embeddings), normalized_model_embeddings),1)
-        return joint_embeddings
+            joint_embeddings=torch.cat((torch.tensor(openai_embeddings), normalize(torch.tensor(model_embeddings),p=2.0, dim=[1])/2),1)
+        return joint_embeddings.cpu().numpy()
         
         
         
