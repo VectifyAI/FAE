@@ -1,4 +1,4 @@
-# Mafin: Enhancing Black-Box Embeddings with Model Augmented Fine-Tuning
+# Enhancing Black-Box Embeddings with Model Augmented Fine-Tuning
 
 A method to fine-tune the black-box OpenAI embedding to improve the retrieval performance 📈.
 
